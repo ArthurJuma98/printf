@@ -1,85 +1,87 @@
-.TH _printf 1 "February 2018" "" "Linux Programmer's Manual"
+.TH _printf 1 "April 16, 2022" "version 1.0" "_printf man page"
 .SH NAME
-.B _printf
-- format and print data.
+_printf - format and print data
 .SH SYNOPSIS
-.B #include <stdio.h>
+#include <unistd.h> <stdarg.h> <stdlib.h> "main.h"
 
-.B int _printf(const char
-*\fIformat\fR,...);
-...
+int printf(const char *format, ...);
+
 .SH DESCRIPTION
-_printf() will produce output according to the \fIformat\fR as described below. _printf() will print to \fIstdout\fR, the standard output stream;
+function that produces output according to a format.  Writes the output under the control of a format string that specifies how subsequent arguments (or arguments accessed via the variable-length argument facilities of stdarg(3)) are converted for output.  Execute according to option:
 
-.B FORMAT
-Format is a character string of ordinary characters (not %), which are copied unchanged to stdout. Conversion specifiers will result in taking in 0 or more arguments. Each one starts with a % and ends with the specifier. In between there could be a \fIflag\fR, an optional minimum \fIfield\fR \fIwidth\fR, an optional \fIprecision\fR and an optional \fIlength/fR \fImodifier\fR.
+.I
+.SS CONVERSION SPECIFIERS:
+.RS
 
-Arguments must match with the conversion specifier and are used in the order they are given, each specifier will call for the next argument.
+A character that specifies the type of conversion to be applied. The conversion specifiers and their meanings are:
 
-.B Flag characters
+.IP d,i
+Decimal signed integer. The int argument is converted to signed decimal notation. 
 
-The % sign is followed by zero or more of the following flags:
+.IP c
+Character. The int argument is converted to an unsigned char, and the resulting character is written.
 
-\fB#\fR   produces a 0 for octal conversion, '0X' or '0x' for hex conversions
+.IP s
+The const char * argument is expected to be a pointer to an array of character type (pointer to a string). Characters from the array are written up to (but not including) a terminating null byte ('\0').
 
-\fB0\fR	  value should be zero padded left justified. With the '-' flag the 0 flag is ignored. if precsion is given, the 0 flag is ignored as well.
+.IP o,u,x,X
+The unsigned int argument is converted to unsigned octal (o), unsigned decimal (u), or unsigned hexadecimal (x and X) notation. The letters abcdef are used for x conversions; the letters ABCDEF are used for X conversions.
 
-\fB-\fR	  left justifies the field
+.IP p
+The void * pointer argument is printed in hexadecimal (as if by %#x or %#lx).
 
-\fB' '\fR (a space) blank should be left before a positive number
+.I
+.SS CUSTOM CONVERSION SPECIFIERS
+.RS
 
-\fB+\fR	  A sign (+ or -) placed before a number, a plus overrides a space if both used.
+.IP b
+Decimal signed integer. The int argument is converted to binary notation.
 
-\fB*\fR A sign to set a custom width or precision based on an argument.
-.B Field Width
-
-Optional decimal digit specifying the total fields width.
-
-.B Precision
-
-Precision is setting the size of the number of digits, must be started with a '.' followed by a decimal.
-
-.B length modifier
-
-This only effects integer conversion specifiers, changes the type to correspond to the argument type given.
-
-\fBl\fR - long conversion
-
-\fBll\fR - long long conversion
-
-\fBh\fR - short int conversion
-
-\fBhh\fR - signed or unsigned char conversion
-
-.B Conversion Specifiers
-
-A chracter that will specify the type of conversion to apply for the argument given.
-
-\fBd,i\fR an \fIint\fR argument with signed decimal notation
-
-\fBo,x,X\fR  an \fIint\fR argument with unsigned decimal notation. o converts to octal, x and X converts to hexadecimal with lower and uppercase letters from aA-fF.
-
-\fBc\fR	     takes a character argument.
-
-\fBs\fR	     takes a char * argument
-
-\fBp\fR	     takes a pointer argument and returns address
-
-\fBr\fR	     takes a char * argument and reverses it
-
-\fBR\fR	     takes a char * argument and produces ROT-13 Encrypted version
-
-\fBS\fR	     takes a char * argument and produces the same string along with non printable characters in hex form.
-
-\fB%\fR	     prints a %
-
-\fB b\fR     take an unsigned int argument and prints out the binary
-
-.SH EXAMPLE
-
-int _printf(%s\\n,\*(lqHello\*(rq); will read the %s and grab the first argument, the string hello. It will print the argument and the move to the next character in the format string. It will read the new line character and create a newline afterwards.
+.IP r
+The const char * argument is expected to be a pointer to an array of character type (pointer to a string). Characters from the array are written up to (but n\ot including) a terminating null byte ('\0') in reverse order.
 
 
-.SH AUTHOR
-Arthur Juma
-Haile Asres
+.IP R
+The const char * argument is expected to be a pointer to an array of character type (pointer to a string). Characters from the array are written up to (but n\
+\ot including) a terminating null byte ('\0') in ROT13 format.
+
+
+.SH RETURN VALUE
+.RS
+Upon successful return, these functions return the number of characters printed (excluding the null byte used to end output to strings).
+
+If an output error is encountered, a negative value (-1) is returned.
+
+
+.SH EXAMPLES:
+.RS
+.SS --------------
+.I
+.SS Character[%c]:
+.RS
+.SS --------------
+.SS Input         _printf("This is a char: [%c]", 'C');
+.SS Output	   This is a char: [C]
+.SS --------------
+.I
+.SS Literal String:
+.RS
+.SS --------------
+.SS Input	 _printf("Let's try to printf a simple sentence");
+.SS Output	  Let's try to printf a simple sentence
+.SS --------------
+.I
+.SS Integers[%i]:
+.RS
+.SS --------------
+.SS Input	 _printf("This is a number: [%i]", 20);
+.SS Output	  This is a number: [20]
+.SS --------------
+.RE
+
+.SH SEE ALSO
+.I printf(3)
+.SH BUGS
+Report _printf Elizabeth Salako (waleade602@gmail.com), Kouam Franck Joel Gaetan (kouamfranck96@gmail.com)
+.SH AUTHORS
+Arthur Ochilo Haile Asres
